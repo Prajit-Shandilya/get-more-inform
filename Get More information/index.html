@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <script src="https://www.gstatic.com/firebasejs/7.19.1/firebase-app.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/7.19.1/firebase-firestore.js"></script>
+  </head>
+  <body>
+    <h3>Enter your question below!</h3>
+    <form id="form">
+      <input type="text" name="name" placeholder="Name" required>
+      <input type="email" name="email" placeholder="Email" required>
+      <input type="ques" name="ques" placeholder="Question" required>
+      <textarea name="message" placeholder="Message" required></textarea>
+      <button type="submit">Submit</button>
+    </form>
+    <div id="success-message" style="display: none;">Data sent successfully! We will reach out to you soon</div>
+
+    <script>
+      // Initialize Firebase
+      var firebaseConfig = {
+        apiKey: "AIzaSyCrzZDHwpq9XCnxsxaxtRcXPYD0injCyCE",
+  authDomain: "dreaming-verse.firebaseapp.com",
+  databaseURL: "https://dreaming-verse-default-rtdb.firebaseio.com",
+  projectId: "dreaming-verse",
+  storageBucket: "dreaming-verse.appspot.com",
+  messagingSenderId: "488793970210",
+  appId: "1:488793970210:web:b5d9f375d14bd321d9dc7b"
+      };
+      firebase.initializeApp(firebaseConfig);
+      var db = firebase.firestore();
+
+      // Submit form data to Firebase
+      var form = document.getElementById("form");
+      form.addEventListener("submit", function(event) {
+        event.preventDefault();
+        var name = event.target.elements.name.value;
+        var email = event.target.elements.email.value;
+        var ques = event.target.elements.ques.value;
+        var message = event.target.elements.message.value;
+        db.collection("data").add({
+          name: name,
+          email: email,
+          message: message,
+          ques:ques
+        })
+        .then(function() {
+          form.reset();
+          document.getElementById("success-message").style.display = "block";
+        })
+        .catch(function(error) {
+          console.error("Error writing document: ", error);
+        });
+      });
+    </script>
+  </body>
+</html>
